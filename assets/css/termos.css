@@ -1,0 +1,21 @@
+﻿.terms-page {
+    max-width: 920px;
+}
+
+.terms-content {
+    padding: 30px;
+}
+
+.terms-content h2 {
+    margin: 24px 0 8px;
+    color: var(--brand);
+}
+
+.terms-content h2:first-child {
+    margin-top: 0;
+}
+
+.terms-content p {
+    color: var(--muted);
+}
+

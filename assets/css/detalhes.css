@@ -1,0 +1,150 @@
+﻿.details-shell {
+    width: min(1180px, calc(100% - 40px));
+    margin: 28px auto 70px;
+}
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    min-height: 38px;
+    margin-bottom: 16px;
+    color: var(--brand);
+    font-weight: 850;
+    text-decoration: none;
+}
+
+.back-link:hover {
+    color: #005a63;
+}
+
+.details-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+    overflow: hidden;
+}
+
+.details-media {
+    min-height: 620px;
+    background: #dce5df;
+}
+
+.details-image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.details-content {
+    display: flex;
+    flex-direction: column;
+    padding: 36px;
+}
+
+.details-kicker {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 14px;
+}
+
+.tag,
+.age {
+    display: inline-flex;
+    align-items: center;
+    min-height: 30px;
+    padding: 5px 10px;
+    border-radius: var(--radius);
+    font-size: 0.84rem;
+    font-weight: 900;
+}
+
+.tag {
+    background: rgba(0, 109, 119, 0.10);
+    color: var(--brand);
+}
+
+.age {
+    background: #f4f6f7;
+    color: var(--muted);
+}
+
+.details-content h1 {
+    margin-bottom: 6px;
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    line-height: 0.98;
+    letter-spacing: 0;
+}
+
+.pet-meta {
+    color: var(--muted);
+    font-weight: 850;
+}
+
+.details-list {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 28px 0;
+}
+
+.details-list div {
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: #fbfcfd;
+}
+
+.details-list strong,
+.details-list span {
+    display: block;
+}
+
+.details-list strong {
+    margin-bottom: 5px;
+    color: var(--brand);
+    font-size: 0.86rem;
+}
+
+.description-box {
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+}
+
+.description-box h2 {
+    margin-bottom: 8px;
+    font-size: 1.08rem;
+}
+
+.description-box p {
+    color: var(--muted);
+}
+
+.details-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: auto;
+    padding-top: 28px;
+}
+
+@media (max-width: 860px) {
+    .details-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .details-media {
+        min-height: 340px;
+    }
+
+    .details-content {
+        padding: 24px;
+    }
+
+    .details-list {
+        grid-template-columns: 1fr;
+    }
+}
+
