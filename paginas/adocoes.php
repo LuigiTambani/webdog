@@ -89,6 +89,7 @@ function statusTexto($status) {
                         </div>
                         <?php if ($item['status'] === 'pendente'): ?>
                             <div class="request-actions">
+                                <a href="chat_adocao.php?id=<?= (int) $item['id'] ?>" class="btn secondary">Chat</a>
                                 <form action="../acoes/responder_adocao.php" method="POST">
                                     <input type="hidden" name="solicitacao_id" value="<?= (int) $item['id'] ?>">
                                     <input type="hidden" name="acao" value="aceitar">
@@ -100,6 +101,8 @@ function statusTexto($status) {
                                     <button class="btn excluir" type="submit">Recusar</button>
                                 </form>
                             </div>
+                        <?php else: ?>
+                            <a href="chat_adocao.php?id=<?= (int) $item['id'] ?>" class="btn secondary">Chat</a>
                         <?php endif; ?>
                     </article>
                 <?php endwhile; ?>
@@ -126,6 +129,7 @@ function statusTexto($status) {
                             <p><?= e($item['tipo']) ?> · <?= e($item['raca']) ?></p>
                             <p><strong>Doador:</strong> <?= e($item['doador_nome']) ?> · <?= e($item['doador_email']) ?></p>
                         </div>
+                        <a href="chat_adocao.php?id=<?= (int) $item['id'] ?>" class="btn secondary">Chat</a>
                         <a href="detalhes_pet.php?id=<?= (int) $item['pet_id'] ?>" class="btn secondary">Ver pet</a>
                     </article>
                 <?php endwhile; ?>
@@ -136,7 +140,6 @@ function statusTexto($status) {
 
 </body>
 </html>
-
 
 
 

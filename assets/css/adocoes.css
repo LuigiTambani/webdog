@@ -105,3 +105,147 @@
     }
 }
 
+.chat-shell {
+    width: min(800px, calc(100% - 30px));
+    margin: 25px auto;
+}
+
+.chat-box {
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    background: #fff;
+}
+
+.chat-topo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border-bottom: 1px solid var(--line);
+    background: #fff;
+}
+
+.chat-topo img {
+    width: 50px;
+    height: 50px;
+    border-radius: var(--radius);
+    object-fit: cover;
+}
+
+.chat-topo h1 {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.chat-topo p,
+.chat-topo span {
+    display: block;
+    color: var(--muted);
+    font-size: 0.82rem;
+}
+
+.chat-voltar {
+    min-height: 34px;
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 10px;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+    text-decoration: none;
+}
+
+.chat-mensagens {
+    height: 420px;
+    overflow-y: auto;
+    padding: 12px;
+    background: #f6f7f9;
+}
+
+.chat-vazio {
+    margin-top: 150px;
+    color: var(--muted);
+    text-align: center;
+}
+
+.mensagem-linha {
+    display: flex;
+    margin-bottom: 10px;
+}
+
+.mensagem-linha.minha {
+    justify-content: flex-end;
+}
+
+.mensagem-linha.outra {
+    justify-content: flex-start;
+}
+
+.mensagem-balao {
+    max-width: 75%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: #fff;
+    border: 1px solid var(--line);
+}
+
+.mensagem-linha.minha .mensagem-balao {
+    background: #e9f4f5;
+}
+
+.mensagem-balao strong {
+    display: block;
+    margin-bottom: 3px;
+    color: var(--brand);
+    font-size: 0.8rem;
+}
+
+.mensagem-balao p {
+    color: #172026;
+}
+
+.mensagem-balao small {
+    display: block;
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 0.72rem;
+    text-align: right;
+}
+
+.chat-form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 8px;
+    padding: 12px;
+    border-top: 1px solid var(--line);
+    background: #fff;
+}
+
+.chat-form textarea {
+    min-height: 42px;
+    resize: none;
+    border-radius: var(--radius);
+}
+
+.chat-form button {
+    min-width: 90px;
+}
+
+@media (max-width: 760px) {
+    .chat-shell {
+        width: calc(100% - 20px);
+        margin: 10px auto;
+    }
+
+    .chat-box {
+        border-radius: var(--radius);
+    }
+
+    .chat-mensagens {
+        height: 360px;
+    }
+
+    .mensagem-balao {
+        max-width: 88%;
+    }
+}
