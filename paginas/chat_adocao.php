@@ -108,7 +108,7 @@ function statusTextoChat($status) {
             </div>
         <?php endif; ?>
 
-        <div class="chat-mensagens" id="chatMensagens">
+        <div class="chat-mensagens" id="chatMensagens" data-solicitacao="<?= (int) $solicitacao["id"] ?>">
             <?php if ($mensagens->num_rows === 0): ?>
                 <div class="chat-vazio">Nenhuma mensagem ainda. Comece a conversa sobre a adoção.</div>
             <?php else: ?>
@@ -144,15 +144,68 @@ var campoMensagem = document.querySelector(".chat-form textarea");
 
 if (form && campoMensagem) {
     campoMensagem.addEventListener("keydown", function(evento) {
-        if (evento.key === "Enter" && !evento.shiftKey) {
+        if ((evento.key === "Enter" || evento.keyCode === 13) && !evento.shiftKey) {
             evento.preventDefault();
 
             if (campoMensagem.value.trim() !== "") {
-                form.submit();
+                if (form.requestSubmit) {
+                    form.requestSubmit();
+                } else {
+                    form.submit();
+                }
             }
         }
     });
 }
+
+function escaparHtml(texto) {
+    var div = document.createElement("div");
+    div.textContent = texto;
+    return div.innerHTML;
+}
+
+function carregarMensagens() {
+    if (!chat) {
+        return;
+    }
+
+    var id = chat.getAttribute("data-solicitacao");
+    var estavaNoFinal = chat.scrollTop + chat.clientHeight >= chat.scrollHeight - 40;
+
+    fetch("../acoes/buscar_mensagens_adocao.php?id=" + id)
+        .then(function(resposta) {
+            return resposta.json();
+        })
+        .then(function(dados) {
+            if (!dados.mensagens) {
+                return;
+            }
+
+            var html = "";
+            for (var i = 0; i < dados.mensagens.length; i++) {
+                var mensagem = dados.mensagens[i];
+                html += '<div class="mensagem-linha ' + (mensagem.minha ? "minha" : "outra") + '">';
+                html += '<div class="mensagem-balao">';
+                html += '<strong>' + escaparHtml(mensagem.remetente) + '</strong>';
+                html += '<p>' + escaparHtml(mensagem.texto).replace(/\n/g, "<br>") + '</p>';
+                html += '<small>' + escaparHtml(mensagem.hora) + '</small>';
+                html += '</div></div>';
+            }
+
+            if (html === "") {
+                html = '<div class="chat-vazio">Nenhuma mensagem ainda. Comece a conversa sobre a adoção.</div>';
+            }
+
+            if (chat.innerHTML !== html) {
+                chat.innerHTML = html;
+                if (estavaNoFinal) {
+                    chat.scrollTop = chat.scrollHeight;
+                }
+            }
+        });
+}
+
+setInterval(carregarMensagens, 3000);
 </script>
 
 </body>
