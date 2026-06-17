@@ -14,7 +14,13 @@ $idade = trim($_GET["idade"] ?? "");
 $ordem = $_GET["ordem"] ?? "recentes";
 
 $racas = [];
-$racasResult = $conn->query("SELECT DISTINCT raca FROM pets WHERE raca <> '' ORDER BY raca");
+$racasResult = $conn->query("SELECT DISTINCT p.raca FROM pets p
+    WHERE p.raca <> ''
+    AND NOT EXISTS (
+        SELECT 1 FROM solicitacoes_adocao s
+        WHERE s.pet_id = p.id AND s.status = 'aprovada'
+    )
+    ORDER BY p.raca");
 if ($racasResult) {
     while ($row = $racasResult->fetch_assoc()) {
         $racas[] = $row["raca"];
@@ -24,6 +30,10 @@ if ($racasResult) {
 $where = [];
 $types = "i";
 $params = [$usuarioId];
+$where[] = "NOT EXISTS (
+    SELECT 1 FROM solicitacoes_adocao aprovada
+    WHERE aprovada.pet_id = p.id AND aprovada.status = 'aprovada'
+)";
 
 if ($busca !== "") {
     $where[] = "(p.nome LIKE ? OR p.tipo LIKE ? OR p.raca LIKE ? OR p.idade LIKE ? OR p.doador LIKE ? OR p.descricao LIKE ?)";
@@ -54,6 +64,7 @@ if ($idade !== "") {
 
 $orderBy = $ordem === "nome" ? "p.nome ASC" : "p.id DESC";
 $sql = "SELECT p.*,
+        (SELECT s.id FROM solicitacoes_adocao s WHERE s.pet_id = p.id AND s.solicitante_id = ? ORDER BY s.id DESC LIMIT 1) AS minha_solicitacao_id,
         (SELECT s.status FROM solicitacoes_adocao s WHERE s.pet_id = p.id AND s.solicitante_id = ? ORDER BY s.id DESC LIMIT 1) AS minha_solicitacao,
         (SELECT COUNT(*) FROM solicitacoes_adocao s WHERE s.pet_id = p.id AND s.status = 'aprovada') AS adocao_aprovada
     FROM pets p";
@@ -63,6 +74,8 @@ if ($where) {
 $sql .= " ORDER BY " . $orderBy;
 
 $stmt = $conn->prepare($sql);
+$types = "i" . $types;
+$params = array_merge([$usuarioId], $params);
 $stmt->bind_param($types, ...$params);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -190,6 +203,8 @@ function resumo($texto, $limite = 116) {
                         <a href="detalhes_pet.php?id=<?= (int) $pet['id'] ?>" class="btn">Ver detalhes</a>
                         <?php if ($isOwner): ?>
                             <a href="editar_pet.php?id=<?= (int) $pet['id'] ?>" class="icon-action" title="Editar">Editar</a>
+                        <?php elseif ($minhaSolicitacao): ?>
+                            <a href="chat_adocao.php?id=<?= (int) $pet['minha_solicitacao_id'] ?>" class="btn accent">Ir para o chat</a>
                         <?php elseif (!$adocaoAprovada && !$minhaSolicitacao): ?>
                             <form action="../acoes/solicitar_adocao.php" method="POST" class="inline-form">
                                 <input type="hidden" name="pet_id" value="<?= (int) $pet['id'] ?>">
@@ -205,8 +220,6 @@ function resumo($texto, $limite = 116) {
 
 </body>
 </html>
-
-
 
 
 

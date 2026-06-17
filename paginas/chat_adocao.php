@@ -37,6 +37,7 @@ if ($solicitacao->num_rows === 0) {
 }
 
 $solicitacao = $solicitacao->fetch_assoc();
+$souDoador = (int) $solicitacao["doador_id"] === $usuarioId;
 
 $stmt = $conn->prepare("SELECT m.*, u.nome AS remetente_nome
     FROM mensagens_adocao m
@@ -91,6 +92,21 @@ function statusTextoChat($status) {
                 <span><?= e($solicitacao["solicitante_nome"]) ?> e <?= e($solicitacao["doador_nome"]) ?></span>
             </div>
         </div>
+
+        <?php if ($souDoador && $solicitacao["status"] === "pendente"): ?>
+            <div class="chat-acoes">
+                <form action="../acoes/responder_adocao.php" method="POST">
+                    <input type="hidden" name="solicitacao_id" value="<?= (int) $solicitacao["id"] ?>">
+                    <input type="hidden" name="acao" value="aceitar">
+                    <button type="submit">Aceitar adoção</button>
+                </form>
+                <form action="../acoes/responder_adocao.php" method="POST">
+                    <input type="hidden" name="solicitacao_id" value="<?= (int) $solicitacao["id"] ?>">
+                    <input type="hidden" name="acao" value="recusar">
+                    <button class="btn excluir" type="submit">Recusar</button>
+                </form>
+            </div>
+        <?php endif; ?>
 
         <div class="chat-mensagens" id="chatMensagens">
             <?php if ($mensagens->num_rows === 0): ?>

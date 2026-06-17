@@ -45,8 +45,7 @@ if ($acao === "aceitar") {
     $stmt->execute();
 }
 
-header("Location: ../paginas/adocoes.php");
+header("Location: ../paginas/chat_adocao.php?id=" . $solicitacaoId);
 exit;
-
 
 

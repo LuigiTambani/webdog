@@ -90,16 +90,6 @@ function statusTexto($status) {
                         <?php if ($item['status'] === 'pendente'): ?>
                             <div class="request-actions">
                                 <a href="chat_adocao.php?id=<?= (int) $item['id'] ?>" class="btn secondary">Chat</a>
-                                <form action="../acoes/responder_adocao.php" method="POST">
-                                    <input type="hidden" name="solicitacao_id" value="<?= (int) $item['id'] ?>">
-                                    <input type="hidden" name="acao" value="aceitar">
-                                    <button class="btn" type="submit">Aceitar</button>
-                                </form>
-                                <form action="../acoes/responder_adocao.php" method="POST">
-                                    <input type="hidden" name="solicitacao_id" value="<?= (int) $item['id'] ?>">
-                                    <input type="hidden" name="acao" value="recusar">
-                                    <button class="btn excluir" type="submit">Recusar</button>
-                                </form>
                             </div>
                         <?php else: ?>
                             <a href="chat_adocao.php?id=<?= (int) $item['id'] ?>" class="btn secondary">Chat</a>
@@ -140,7 +130,6 @@ function statusTexto($status) {
 
 </body>
 </html>
-
 
 
 

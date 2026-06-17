@@ -10,10 +10,11 @@ $usuarioId = (int) $_SESSION['usuario'];
 $id = (int) ($_GET["id"] ?? 0);
 
 $stmt = $conn->prepare("SELECT p.*,
+        (SELECT s.id FROM solicitacoes_adocao s WHERE s.pet_id = p.id AND s.solicitante_id = ? ORDER BY s.id DESC LIMIT 1) AS minha_solicitacao_id,
         (SELECT s.status FROM solicitacoes_adocao s WHERE s.pet_id = p.id AND s.solicitante_id = ? ORDER BY s.id DESC LIMIT 1) AS minha_solicitacao,
         (SELECT COUNT(*) FROM solicitacoes_adocao s WHERE s.pet_id = p.id AND s.status = 'aprovada') AS adocao_aprovada
     FROM pets p WHERE p.id = ?");
-$stmt->bind_param("ii", $usuarioId, $id);
+$stmt->bind_param("iii", $usuarioId, $usuarioId, $id);
 $stmt->execute();
 $result = $stmt->get_result();
 
@@ -96,8 +97,12 @@ $minhaSolicitacao = $pet["minha_solicitacao"] ?? null;
                     <span class="status-message">Este pet já teve uma adoção aprovada.</span>
                 <?php elseif ($minhaSolicitacao === "pendente"): ?>
                     <span class="status-message">Sua solicitação está pendente. Aguarde o doador responder.</span>
+                    <a href="chat_adocao.php?id=<?= (int) $pet["minha_solicitacao_id"] ?>" class="btn accent">Ir para o chat</a>
                 <?php elseif ($minhaSolicitacao === "aprovada"): ?>
                     <span class="status-message">Sua adoção foi aprovada pelo doador.</span>
+                    <a href="chat_adocao.php?id=<?= (int) $pet["minha_solicitacao_id"] ?>" class="btn accent">Ir para o chat</a>
+                <?php elseif ($minhaSolicitacao): ?>
+                    <a href="chat_adocao.php?id=<?= (int) $pet["minha_solicitacao_id"] ?>" class="btn accent">Ir para o chat</a>
                 <?php else: ?>
                     <form action="../acoes/solicitar_adocao.php" method="POST" class="inline-form">
                         <input type="hidden" name="pet_id" value="<?= (int) $pet["id"] ?>">
@@ -111,7 +116,6 @@ $minhaSolicitacao = $pet["minha_solicitacao"] ?? null;
 
 </body>
 </html>
-
 
 
 

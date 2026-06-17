@@ -162,6 +162,18 @@
     background: #f6f7f9;
 }
 
+.chat-acoes {
+    display: flex;
+    gap: 8px;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--line);
+    background: #fff;
+}
+
+.chat-acoes form {
+    margin: 0;
+}
+
 .chat-vazio {
     margin-top: 150px;
     color: var(--muted);
@@ -243,6 +255,10 @@
 
     .chat-mensagens {
         height: 360px;
+    }
+
+    .chat-acoes {
+        flex-direction: column;
     }
 
     .mensagem-balao {

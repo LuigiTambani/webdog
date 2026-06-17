@@ -55,16 +55,16 @@ if ($existente->num_rows > 0) {
         $stmt->execute();
     }
 
-    header("Location: ../paginas/adocoes.php");
+    header("Location: ../paginas/chat_adocao.php?id=" . (int) $solicitacao["id"]);
     exit;
 }
 
 $stmt = $conn->prepare("INSERT INTO solicitacoes_adocao (pet_id, solicitante_id, doador_id, status) VALUES (?, ?, ?, 'pendente')");
 $stmt->bind_param("iii", $petId, $usuarioId, $doadorId);
 $stmt->execute();
+$solicitacaoId = $conn->insert_id;
 
-header("Location: ../paginas/adocoes.php");
+header("Location: ../paginas/chat_adocao.php?id=" . (int) $solicitacaoId);
 exit;
-
 
 
