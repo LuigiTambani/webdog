@@ -138,6 +138,21 @@ var chat = document.getElementById("chatMensagens");
 if (chat) {
     chat.scrollTop = chat.scrollHeight;
 }
+
+var form = document.querySelector(".chat-form");
+var campoMensagem = document.querySelector(".chat-form textarea");
+
+if (form && campoMensagem) {
+    campoMensagem.addEventListener("keydown", function(evento) {
+        if (evento.key === "Enter" && !evento.shiftKey) {
+            evento.preventDefault();
+
+            if (campoMensagem.value.trim() !== "") {
+                form.submit();
+            }
+        }
+    });
+}
 </script>
 
 </body>
