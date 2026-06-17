@@ -143,6 +143,8 @@ var form = document.querySelector(".chat-form");
 var campoMensagem = document.querySelector(".chat-form textarea");
 
 if (form && campoMensagem) {
+    campoMensagem.focus();
+
     campoMensagem.addEventListener("keydown", function(evento) {
         if ((evento.key === "Enter" || evento.keyCode === 13) && !evento.shiftKey) {
             evento.preventDefault();
@@ -201,6 +203,10 @@ function carregarMensagens() {
                 if (estavaNoFinal) {
                     chat.scrollTop = chat.scrollHeight;
                 }
+            }
+
+            if (campoMensagem && document.activeElement !== campoMensagem) {
+                campoMensagem.focus();
             }
         });
 }
